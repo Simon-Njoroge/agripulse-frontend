@@ -1,84 +1,9 @@
-
+// Enums
 export enum UserRole {
   ADMIN = 'admin',
   AGENT = 'agent',
 }
 
-
-export interface User {
-  id: string;
-  email: string;
-  name: string;
-  role: UserRole;
-}
-
-
-export interface LoginRequest {
-  email: string;
-  password: string;
-  forceLogin?: boolean;
-}
-
-
-export interface LoginSuccessResponse {
-  access_token: string;
-  refresh_token: string;
-  user: User;
-}
-
-
-export interface ForceLoginRequiredResponse {
-  requireForceLogin: true;
-  user: User;
-}
-
-
-export type LoginResponse = LoginSuccessResponse | ForceLoginRequiredResponse;
-
-
-export interface SignupRequest {
-  email: string;
-  password: string;
-  name: string;
-  role?: UserRole;
-}
-
-
-export interface SignupResponse {
-  message: string;
-  user: User;
-}
-
-
-export interface RefreshTokenResponse {
-  access_token: string;
-  refresh_token: string;
-}
-
-
-export interface LogoutRequest {
-  // No payload required - credentials in HTTP-only cookie are sufficient
-}
-
-
-export interface LogoutResponse {
-  message: string;
-}
-
-
-export interface GetMeResponse extends User {
-  lastLoginAt: string;
-  createdAt: string;
-}
-
-
-export interface ApiResponse<T> {
-  success: boolean;
-  data: T;
-  timestamp: string;
-}
-
-// Field Types
 export enum CropType {
   CORN = 'CORN',
   WHEAT = 'WHEAT',
@@ -101,6 +26,16 @@ export enum FieldStatus {
   COMPLETED = 'COMPLETED',
 }
 
+// User
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: UserRole;
+  createdAt: string;
+}
+
+// Field
 export interface Field {
   id: string;
   name: string;
@@ -122,6 +57,7 @@ export interface Field {
   createdAt: string;
 }
 
+// Field Update
 export interface FieldUpdate {
   id: string;
   fieldId: string;
@@ -135,6 +71,14 @@ export interface FieldUpdate {
   createdAt: string;
 }
 
+// API Response
+export interface ApiResponse<T> {
+  success: boolean;
+  data: T;
+  timestamp: string;
+}
+
+// Paginated Response
 export interface PaginatedResponse<T> {
   data: T[];
   pagination: {
@@ -145,6 +89,7 @@ export interface PaginatedResponse<T> {
   };
 }
 
+// Dashboard Admin
 export interface AdminDashboard {
   totalFields: number;
   activeFields: number;
@@ -182,6 +127,7 @@ export interface AdminDashboard {
   };
 }
 
+// Dashboard Agent
 export interface AgentDashboard {
   totalFieldsAssigned: number;
   activeFields: number;
@@ -227,6 +173,26 @@ export interface AgentDashboard {
   };
 }
 
+// Login Request
+export interface LoginRequest {
+  email: string;
+  password: string;
+  forceLogin?: boolean;
+}
+
+// Force Login Response
+export interface ForceLoginResponse {
+  requireForceLogin: true;
+  user: {
+    email: string;
+    name: string;
+  };
+}
+
+// Auth Response
+export type AuthResponse = User | ForceLoginResponse;
+
+// Query Filter Types
 export interface FieldFilters {
   page?: number;
   limit?: number;

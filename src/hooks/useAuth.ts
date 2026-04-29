@@ -105,18 +105,14 @@ export function useAuth() {
  
   const logoutMutation = useMutation({
     mutationFn: async () => {
-      const sessionId = localStorage.getItem('session_id');
-      if (sessionId) {
-        return authService.logout({ session_id: sessionId });
-      }
-      return { success: true, data: { message: 'Logged out' } } as any;
+      return authService.logout({});
     },
     onSuccess: () => {
       clearAuth();
       queryClient.clear();
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');
-      localStorage.removeItem('session_id');
+      localStorage.removeItem('user');
       toast.success('Logged out successfully');
       navigate({ to: '/login' });
     },

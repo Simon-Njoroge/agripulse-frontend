@@ -1,4 +1,4 @@
-import { api } from './api';
+import { api, apiNoCredentials } from './api';
 import type {
   LoginRequest,
   LoginResponse,
@@ -14,7 +14,7 @@ import type {
 export const authService = {
   
   async login(data: LoginRequest): Promise<ApiResponse<LoginResponse>> {
-    const response = await api.post<ApiResponse<LoginResponse>>('/auth/login', data);
+    const response = await apiNoCredentials.post<ApiResponse<LoginResponse>>('/auth/login', data);
     
    
     if (response.data.success && !('requireForceLogin' in response.data.data)) {
@@ -31,7 +31,7 @@ export const authService = {
 
  
   async forceLogin(data: LoginRequest): Promise<ApiResponse<LoginResponse>> {
-    const response = await api.post<ApiResponse<LoginResponse>>('/auth/login', {
+    const response = await apiNoCredentials.post<ApiResponse<LoginResponse>>('/auth/login', {
       ...data,
       forceLogin: true,
     });
@@ -50,7 +50,7 @@ export const authService = {
 
  
   async signup(data: SignupRequest): Promise<ApiResponse<SignupResponse>> {
-    const response = await api.post<ApiResponse<SignupResponse>>('/auth/signup', data);
+    const response = await apiNoCredentials.post<ApiResponse<SignupResponse>>('/auth/signup', data);
     return response.data;
   },
 
@@ -71,7 +71,7 @@ export const authService = {
 
  
   async logout(data: LogoutRequest): Promise<ApiResponse<LogoutResponse>> {
-    const response = await api.post<ApiResponse<LogoutResponse>>('/auth/logout', data);
+    const response = await api.post<ApiResponse<LogoutResponse>>('/auth/logout');
     
    
     if (response.data.success) {

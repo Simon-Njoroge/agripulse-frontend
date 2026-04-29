@@ -4,7 +4,16 @@ import { API_BASE_URL } from '#/common/common';
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
-  withCredentials: false, 
+  withCredentials: true, 
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+
+export const apiNoCredentials = axios.create({
+  baseURL: API_BASE_URL,
+  withCredentials: false,
   headers: {
     'Content-Type': 'application/json',
   },

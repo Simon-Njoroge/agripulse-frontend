@@ -9,9 +9,29 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AgentRouteImport } from './routes/agent'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
+import { Route as AgentFieldsRouteImport } from './routes/agent/fields'
+import { Route as AgentDashboardRouteImport } from './routes/agent/dashboard'
+import { Route as AdminFieldsRouteImport } from './routes/admin/fields'
+import { Route as AdminDashboardRouteImport } from './routes/admin/dashboard'
+import { Route as AdminAgentsRouteImport } from './routes/admin/agents'
+import { Route as AgentFieldsFieldIdRouteImport } from './routes/agent/fields.$fieldId'
+import { Route as AdminFieldsCreateRouteImport } from './routes/admin/fields/create'
+import { Route as AdminFieldsFieldIdEditRouteImport } from './routes/admin/fields/$fieldId/edit'
 
+const AgentRoute = AgentRouteImport.update({
+  id: '/agent',
+  path: '/agent',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -22,35 +42,158 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   path: '/auth/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AgentFieldsRoute = AgentFieldsRouteImport.update({
+  id: '/fields',
+  path: '/fields',
+  getParentRoute: () => AgentRoute,
+} as any)
+const AgentDashboardRoute = AgentDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AgentRoute,
+} as any)
+const AdminFieldsRoute = AdminFieldsRouteImport.update({
+  id: '/fields',
+  path: '/fields',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminDashboardRoute = AdminDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAgentsRoute = AdminAgentsRouteImport.update({
+  id: '/agents',
+  path: '/agents',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AgentFieldsFieldIdRoute = AgentFieldsFieldIdRouteImport.update({
+  id: '/$fieldId',
+  path: '/$fieldId',
+  getParentRoute: () => AgentFieldsRoute,
+} as any)
+const AdminFieldsCreateRoute = AdminFieldsCreateRouteImport.update({
+  id: '/create',
+  path: '/create',
+  getParentRoute: () => AdminFieldsRoute,
+} as any)
+const AdminFieldsFieldIdEditRoute = AdminFieldsFieldIdEditRouteImport.update({
+  id: '/$fieldId/edit',
+  path: '/$fieldId/edit',
+  getParentRoute: () => AdminFieldsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/agent': typeof AgentRouteWithChildren
+  '/admin/agents': typeof AdminAgentsRoute
+  '/admin/dashboard': typeof AdminDashboardRoute
+  '/admin/fields': typeof AdminFieldsRouteWithChildren
+  '/agent/dashboard': typeof AgentDashboardRoute
+  '/agent/fields': typeof AgentFieldsRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
+  '/admin/fields/create': typeof AdminFieldsCreateRoute
+  '/agent/fields/$fieldId': typeof AgentFieldsFieldIdRoute
+  '/admin/fields/$fieldId/edit': typeof AdminFieldsFieldIdEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/agent': typeof AgentRouteWithChildren
+  '/admin/agents': typeof AdminAgentsRoute
+  '/admin/dashboard': typeof AdminDashboardRoute
+  '/admin/fields': typeof AdminFieldsRouteWithChildren
+  '/agent/dashboard': typeof AgentDashboardRoute
+  '/agent/fields': typeof AgentFieldsRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
+  '/admin/fields/create': typeof AdminFieldsCreateRoute
+  '/agent/fields/$fieldId': typeof AgentFieldsFieldIdRoute
+  '/admin/fields/$fieldId/edit': typeof AdminFieldsFieldIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/agent': typeof AgentRouteWithChildren
+  '/admin/agents': typeof AdminAgentsRoute
+  '/admin/dashboard': typeof AdminDashboardRoute
+  '/admin/fields': typeof AdminFieldsRouteWithChildren
+  '/agent/dashboard': typeof AgentDashboardRoute
+  '/agent/fields': typeof AgentFieldsRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
+  '/admin/fields/create': typeof AdminFieldsCreateRoute
+  '/agent/fields/$fieldId': typeof AgentFieldsFieldIdRoute
+  '/admin/fields/$fieldId/edit': typeof AdminFieldsFieldIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth/login'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/agent'
+    | '/admin/agents'
+    | '/admin/dashboard'
+    | '/admin/fields'
+    | '/agent/dashboard'
+    | '/agent/fields'
+    | '/auth/login'
+    | '/admin/fields/create'
+    | '/agent/fields/$fieldId'
+    | '/admin/fields/$fieldId/edit'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth/login'
-  id: '__root__' | '/' | '/auth/login'
+  to:
+    | '/'
+    | '/admin'
+    | '/agent'
+    | '/admin/agents'
+    | '/admin/dashboard'
+    | '/admin/fields'
+    | '/agent/dashboard'
+    | '/agent/fields'
+    | '/auth/login'
+    | '/admin/fields/create'
+    | '/agent/fields/$fieldId'
+    | '/admin/fields/$fieldId/edit'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/agent'
+    | '/admin/agents'
+    | '/admin/dashboard'
+    | '/admin/fields'
+    | '/agent/dashboard'
+    | '/agent/fields'
+    | '/auth/login'
+    | '/admin/fields/create'
+    | '/agent/fields/$fieldId'
+    | '/admin/fields/$fieldId/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRouteWithChildren
+  AgentRoute: typeof AgentRouteWithChildren
   AuthLoginRoute: typeof AuthLoginRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/agent': {
+      id: '/agent'
+      path: '/agent'
+      fullPath: '/agent'
+      preLoaderRoute: typeof AgentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -65,11 +208,121 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/agent/fields': {
+      id: '/agent/fields'
+      path: '/fields'
+      fullPath: '/agent/fields'
+      preLoaderRoute: typeof AgentFieldsRouteImport
+      parentRoute: typeof AgentRoute
+    }
+    '/agent/dashboard': {
+      id: '/agent/dashboard'
+      path: '/dashboard'
+      fullPath: '/agent/dashboard'
+      preLoaderRoute: typeof AgentDashboardRouteImport
+      parentRoute: typeof AgentRoute
+    }
+    '/admin/fields': {
+      id: '/admin/fields'
+      path: '/fields'
+      fullPath: '/admin/fields'
+      preLoaderRoute: typeof AdminFieldsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/dashboard': {
+      id: '/admin/dashboard'
+      path: '/dashboard'
+      fullPath: '/admin/dashboard'
+      preLoaderRoute: typeof AdminDashboardRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/agents': {
+      id: '/admin/agents'
+      path: '/agents'
+      fullPath: '/admin/agents'
+      preLoaderRoute: typeof AdminAgentsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/agent/fields/$fieldId': {
+      id: '/agent/fields/$fieldId'
+      path: '/$fieldId'
+      fullPath: '/agent/fields/$fieldId'
+      preLoaderRoute: typeof AgentFieldsFieldIdRouteImport
+      parentRoute: typeof AgentFieldsRoute
+    }
+    '/admin/fields/create': {
+      id: '/admin/fields/create'
+      path: '/create'
+      fullPath: '/admin/fields/create'
+      preLoaderRoute: typeof AdminFieldsCreateRouteImport
+      parentRoute: typeof AdminFieldsRoute
+    }
+    '/admin/fields/$fieldId/edit': {
+      id: '/admin/fields/$fieldId/edit'
+      path: '/$fieldId/edit'
+      fullPath: '/admin/fields/$fieldId/edit'
+      preLoaderRoute: typeof AdminFieldsFieldIdEditRouteImport
+      parentRoute: typeof AdminFieldsRoute
+    }
   }
 }
 
+interface AdminFieldsRouteChildren {
+  AdminFieldsCreateRoute: typeof AdminFieldsCreateRoute
+  AdminFieldsFieldIdEditRoute: typeof AdminFieldsFieldIdEditRoute
+}
+
+const AdminFieldsRouteChildren: AdminFieldsRouteChildren = {
+  AdminFieldsCreateRoute: AdminFieldsCreateRoute,
+  AdminFieldsFieldIdEditRoute: AdminFieldsFieldIdEditRoute,
+}
+
+const AdminFieldsRouteWithChildren = AdminFieldsRoute._addFileChildren(
+  AdminFieldsRouteChildren,
+)
+
+interface AdminRouteChildren {
+  AdminAgentsRoute: typeof AdminAgentsRoute
+  AdminDashboardRoute: typeof AdminDashboardRoute
+  AdminFieldsRoute: typeof AdminFieldsRouteWithChildren
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminAgentsRoute: AdminAgentsRoute,
+  AdminDashboardRoute: AdminDashboardRoute,
+  AdminFieldsRoute: AdminFieldsRouteWithChildren,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
+interface AgentFieldsRouteChildren {
+  AgentFieldsFieldIdRoute: typeof AgentFieldsFieldIdRoute
+}
+
+const AgentFieldsRouteChildren: AgentFieldsRouteChildren = {
+  AgentFieldsFieldIdRoute: AgentFieldsFieldIdRoute,
+}
+
+const AgentFieldsRouteWithChildren = AgentFieldsRoute._addFileChildren(
+  AgentFieldsRouteChildren,
+)
+
+interface AgentRouteChildren {
+  AgentDashboardRoute: typeof AgentDashboardRoute
+  AgentFieldsRoute: typeof AgentFieldsRouteWithChildren
+}
+
+const AgentRouteChildren: AgentRouteChildren = {
+  AgentDashboardRoute: AgentDashboardRoute,
+  AgentFieldsRoute: AgentFieldsRouteWithChildren,
+}
+
+const AgentRouteWithChildren = AgentRoute._addFileChildren(AgentRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRouteWithChildren,
+  AgentRoute: AgentRouteWithChildren,
   AuthLoginRoute: AuthLoginRoute,
 }
 export const routeTree = rootRouteImport
