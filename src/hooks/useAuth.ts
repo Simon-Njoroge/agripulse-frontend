@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
+import { useRef } from 'react';
 import { authService } from '../api/auth.service';
 import { useAuthStore } from '../store/authStore';
 import type { LoginRequest, ForceLoginRequiredResponse } from '../types/auth.types';
@@ -9,6 +10,7 @@ export function useAuth() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { setUser, setAuthenticated, clearAuth, user, isAuthenticated } = useAuthStore();
+  const currentCredentialsRef = useRef<LoginRequest | null>(null);
 
 
   const useGetMe = () =>
@@ -30,34 +32,27 @@ export function useAuth() {
   
   const loginMutation = useMutation({
     mutationFn: async (data: LoginRequest) => {
-      const response = await authService.login(data);
-      return response;
+      currentCredentialsRef.current = data;
+      // Always include forceLogin: true in the payload
+      const response = await authService.login({ ...data, forceLogin: true });
+      return response; // This is the actual API response (requireForceLogin or login data)
     },
     onSuccess: (response) => {
-      const responseData = response.data;
-      
-     
-      if ('requireForceLogin' in responseData && responseData.requireForceLogin === true) {
-      
-        const forceLoginData = responseData as ForceLoginRequiredResponse;
-        return { requireForceLogin: true, user: forceLoginData.user };
+      if ('requireForceLogin' in response && response.requireForceLogin === true) {
+        // Do not navigate, let modal logic handle
+        toast.info('Existing session detected. Please confirm force login.');
+        return;
       }
-      
-      
-      if ('access_token' in responseData) {
-        setUser(responseData.user);
+      if ('access_token' in response) {
+        setUser(response.user);
         setAuthenticated(true);
-        toast.success(`Welcome back, ${responseData.user.name}!`);
-        
-       
-        if (responseData.user.role === 'admin') {
+        toast.success(`Welcome back, ${response.user.name}!`);
+        if (response.user.role === 'admin') {
           navigate({ to: '/admin' });
         } else {
           navigate({ to: '/agent' });
         }
       }
-      
-      return { requireForceLogin: false };
     },
     onError: (error: any) => {
       const message = error.response?.data?.message || 'Login failed. Please try again.';
@@ -72,13 +67,12 @@ export function useAuth() {
       return response;
     },
     onSuccess: (response) => {
-      if (response.success && 'access_token' in response.data) {
-        setUser(response.data.user);
+      if ('access_token' in response) {
+        setUser(response.user);
         setAuthenticated(true);
         toast.success(`Logged in successfully on this device. Previous session was terminated.`);
-        
-        
-        if (response.data.user.role === 'admin') {
+
+        if (response.user.role === 'admin') {
           navigate({ to: '/admin' });
         } else {
           navigate({ to: '/agent' });
@@ -94,7 +88,7 @@ export function useAuth() {
   const signupMutation = useMutation({
     mutationFn: authService.signup,
     onSuccess: (response) => {
-      toast.success(response.data.message || 'Account created successfully! Please login.');
+      toast.success(response.message || 'Account created successfully! Please login.');
       navigate({ to: '/login' });
     },
     onError: (error: any) => {

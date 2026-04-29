@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 export function AdminLayout() {
   const location = useLocation();
-  const { user, logout } = useAuthStore();
+  const { user } = useAuthStore();
   const { logout: logoutAuth } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 

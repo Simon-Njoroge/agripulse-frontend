@@ -1,10 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useState, useEffect } from 'react';
-import {  useNavigate } from '@tanstack/react-router';
+import { useNavigate } from '@tanstack/react-router';
 import { useAuth } from '@/hooks/useAuth';
-import { ForceLoginModal } from '@/common/ForceLoginModal';
 import { Mail, Lock, Eye, EyeOff, Leaf, AlertCircle } from 'lucide-react';
-import toast from 'react-hot-toast';
+
 
 export const Route = createFileRoute('/auth/login')({
   component: LoginPage,
@@ -49,25 +48,31 @@ function LoginPage() {
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
   
   
-  const [showForceModal, setShowForceModal] = useState(false);
-  const [pendingCredentials, setPendingCredentials] = useState<{ email: string; password: string } | null>(null);
+  
 
   
   useEffect(() => {
     if (isForceLoginData(loginData)) {
-      setPendingCredentials({ email, password });
-      setShowForceModal(true);
+      navigate({
+        to: '/auth/force-login',
+        state: {
+          email,
+          password,
+          userEmail: loginData.user.email,
+          userName: loginData.user.name,
+        },
+      });
     }
-  }, [loginData, email, password]);
+  }, [loginData, email, password, navigate]);
 
   useEffect(() => {
     const user = localStorage.getItem('user');
     if (user) {
       const parsedUser = JSON.parse(user);
       if (parsedUser.role === 'admin') {
-        navigate({ to: '/admin' });
+        navigate({ to: 'admin/dashboard' });
       } else {
-        navigate({ to: '/agent' });
+        navigate({ to: '/agent/dashboard' });
       }
     }
   }, [navigate]);
@@ -98,24 +103,7 @@ function LoginPage() {
     }
   };
 
-  const handleForceLoginConfirm = () => {
-    if (pendingCredentials) {
-      forceLogin({ email: pendingCredentials.email, password: pendingCredentials.password });
-      setShowForceModal(false);
-      setPendingCredentials(null);
-    }
-  };
-
-  const handleForceLoginCancel = () => {
-    setShowForceModal(false);
-    setPendingCredentials(null);
-    toast('You can try again later or contact support');
-  };
-
-  
-  const forceLoginUser = isForceLoginData(loginData)
-    ? loginData.user
-    : null;
+ 
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-white flex">
@@ -281,16 +269,7 @@ function LoginPage() {
       </div>
 
       
-      {forceLoginUser && (
-        <ForceLoginModal
-          isOpen={showForceModal}
-          userEmail={forceLoginUser.email}
-          userName={forceLoginUser.name}
-          onConfirm={handleForceLoginConfirm}
-          onCancel={handleForceLoginCancel}
-          isLoading={isForceLoggingIn}
-        />
-      )}
+
     </div>
   );
 }

@@ -16,9 +16,14 @@ export const authService = {
   async login(data: LoginRequest): Promise<ApiResponse<LoginResponse>> {
     const response = await apiNoCredentials.post<ApiResponse<LoginResponse>>('/auth/login', data);
     
-   
-    if (response.data.success && !('requireForceLogin' in response.data.data)) {
-      const loginData = response.data.data as LoginResponse;
+
+    const wrappedData = response.data.data.data;
+    console.log('auth.service.login - wrappedData:', wrappedData);
+    console.log('Has requireForceLogin:', 'requireForceLogin' in (wrappedData || {}));
+
+    
+    if (wrappedData && !('requireForceLogin' in wrappedData)) {
+      const loginData = wrappedData as LoginResponse;
       if ('access_token' in loginData) {
         localStorage.setItem('access_token', loginData.access_token);
         localStorage.setItem('refresh_token', loginData.refresh_token);
@@ -26,7 +31,7 @@ export const authService = {
       }
     }
     
-    return response.data;
+    return wrappedData;
   },
 
  
@@ -36,22 +41,22 @@ export const authService = {
       forceLogin: true,
     });
     
-    if (response.data.success) {
-      const loginData = response.data.data as LoginResponse;
-      if ('access_token' in loginData) {
-        localStorage.setItem('access_token', loginData.access_token);
-        localStorage.setItem('refresh_token', loginData.refresh_token);
-        localStorage.setItem('user', JSON.stringify(loginData.user));
-      }
+    const wrappedData = response.data.data.data;
+    
+    if (wrappedData && 'access_token' in wrappedData) {
+      const loginData = wrappedData as LoginResponse;
+      localStorage.setItem('access_token', loginData.access_token);
+      localStorage.setItem('refresh_token', loginData.refresh_token);
+      localStorage.setItem('user', JSON.stringify(loginData.user));
     }
     
-    return response.data;
+    return wrappedData;
   },
 
  
   async signup(data: SignupRequest): Promise<ApiResponse<SignupResponse>> {
     const response = await apiNoCredentials.post<ApiResponse<SignupResponse>>('/auth/signup', data);
-    return response.data;
+    return response.data.data.data;
   },
 
 
@@ -61,31 +66,30 @@ export const authService = {
       refresh_token: refreshToken,
     });
     
-    if (response.data.success) {
-      localStorage.setItem('access_token', response.data.data.access_token);
-      localStorage.setItem('refresh_token', response.data.data.refresh_token);
+    const wrappedData = response.data.data.data;
+    if (wrappedData) {
+      localStorage.setItem('access_token', wrappedData.access_token);
+      localStorage.setItem('refresh_token', wrappedData.refresh_token);
     }
     
-    return response.data;
+    return wrappedData;
   },
 
  
   async logout(_data: LogoutRequest): Promise<ApiResponse<LogoutResponse>> {
     const response = await api.post<ApiResponse<LogoutResponse>>('/auth/logout');
     
-   
-    if (response.data.success) {
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('refresh_token');
-      localStorage.removeItem('user');
-    }
+    const wrappedData = response.data.data.data;
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    localStorage.removeItem('user');
     
-    return response.data;
+    return wrappedData;
   },
 
  
   async getMe(): Promise<ApiResponse<GetMeResponse>> {
     const response = await api.get<ApiResponse<GetMeResponse>>('/auth/me');
-    return response.data;
+    return response.data.data.data;
   },
 };

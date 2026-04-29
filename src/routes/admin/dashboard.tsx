@@ -4,7 +4,6 @@ import {
   BarChart3,
   AlertTriangle,
   TrendingUp,
-  Users,
   Activity,
 } from 'lucide-react';
 import { useAdminDashboard } from '@/hooks/useDashboard';
