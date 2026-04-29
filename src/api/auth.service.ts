@@ -1,4 +1,4 @@
-import { api, apiNoCredentials } from './api';
+import {  apiNoCredentials } from './api';
 import type {
   LoginRequest,
   LoginResponse,
@@ -70,7 +70,7 @@ export const authService = {
   },
 
  
-  async logout(data: LogoutRequest): Promise<ApiResponse<LogoutResponse>> {
+  async logout(_data: LogoutRequest): Promise<ApiResponse<LogoutResponse>> {
     const response = await api.post<ApiResponse<LogoutResponse>>('/auth/logout');
     
    
