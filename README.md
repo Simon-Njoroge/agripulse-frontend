@@ -588,6 +588,6 @@ For issues, feature requests, or questions:
 
 ---
 
-**Made with ❤️ by the AgriPulse Team**
+
 
 *Last Updated: April 2026*
