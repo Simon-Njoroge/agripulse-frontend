@@ -15,10 +15,17 @@ import {
   Search,
   Zap
 } from 'lucide-react';
+import { useNavigate } from '@tanstack/react-router';
 
 const LandingPage = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navigate=useNavigate()
+
+  const handleLogin=()=>{
+    navigate({to: '/auth/login'})
+
+  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -66,7 +73,7 @@ const LandingPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-50 via-green-50/50 to-white">
-      {/* Navbar */}
+     
       <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         isScrolled ? 'bg-white/95 backdrop-blur-md shadow-lg py-3' : 'bg-transparent py-5'
       }`}>
@@ -91,7 +98,7 @@ const LandingPage = () => {
           </div>
 
           <div className="hidden md:flex items-center space-x-3">
-            <button className="px-5 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-all duration-200 font-medium shadow-sm">
+            <button className="px-5 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-all duration-200 font-medium shadow-sm" onClick={handleLogin}>
               Sign In
             </button>
           </div>
@@ -117,7 +124,7 @@ const LandingPage = () => {
               </a>
             ))}
             <div className="flex flex-col space-y-3 pt-4 border-t mt-2">
-              <button className="w-full px-5 py-2 text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition font-medium">
+              <button className="w-full px-5 py-2 text-gray-700 bg-white  cursor-pointer border border-gray-200 rounded-lg hover:bg-gray-50 transition font-medium" onClick={handleLogin}>
                 Sign In
               </button>
             </div>
