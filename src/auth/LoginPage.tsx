@@ -58,9 +58,9 @@ export default function LoginPage() {
     if (user) {
       const parsedUser = JSON.parse(user);
       if (parsedUser.role === 'admin') {
-        navigate({ to: '/admin' });
+        navigate({ to: '/admin/dashboard' });
       } else {
-        navigate({ to: '/agent' });
+        navigate({ to: '/agent/dashboard' });
       }
     }
   }, [navigate]);
@@ -174,7 +174,7 @@ export default function LoginPage() {
 
          
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Email Field */}
+           =
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Email Address
@@ -244,7 +244,7 @@ export default function LoginPage() {
               </a>
             </div>
 
-            {/* Submit Button */}
+         
             <button
               type="submit"
               disabled={isLoggingIn}
@@ -261,22 +261,9 @@ export default function LoginPage() {
             </button>
           </form>
 
-          {/* Demo Credentials */}
-          <div className="mt-6 p-3 bg-gray-50 rounded-lg border border-gray-100">
-            <p className="text-xs text-gray-500 text-center mb-2">Demo Credentials</p>
-            <div className="flex flex-col gap-1 text-xs text-gray-600">
-              <p className="flex justify-between">
-                <span className="font-medium">Admin:</span>
-                <span>admin@agripulse.com / demo123</span>
-              </p>
-              <p className="flex justify-between">
-                <span className="font-medium">Agent:</span>
-                <span>john@agripulse.com / demo123</span>
-              </p>
-            </div>
-          </div>
+         
 
-          {/* Sign Up Link */}
+        
           <p className="text-center text-gray-600 mt-6">
             Don't have an account?{' '}
             <a href="/signup" className="text-green-600 font-semibold hover:text-green-700 transition">

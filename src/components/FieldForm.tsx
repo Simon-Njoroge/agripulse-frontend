@@ -1,7 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createFieldSchema } from '@/utils/schemas';
-import { CropType, FieldStage } from '@/types/auth.types';
 import { cropTypeLabels } from '@/utils/helpers';
 
 interface FieldFormProps {
@@ -24,7 +23,7 @@ export function FieldForm({
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(createFieldSchema),
+    resolver: zodResolver(createFieldSchema as any),
     defaultValues: defaultValues || {},
   });
 
@@ -33,7 +32,7 @@ export function FieldForm({
       <h2 className="text-2xl font-bold text-gray-900 mb-6">{title}</h2>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        {/* Field Name */}
+      
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Field Name *
@@ -49,7 +48,7 @@ export function FieldForm({
           )}
         </div>
 
-        {/* Crop Type */}
+       
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Crop Type *
@@ -70,7 +69,7 @@ export function FieldForm({
           )}
         </div>
 
-        {/* Planting Date */}
+        
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Planting Date *
@@ -85,7 +84,7 @@ export function FieldForm({
           )}
         </div>
 
-        {/* Area */}
+       
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Area (Hectares)
@@ -102,7 +101,7 @@ export function FieldForm({
           )}
         </div>
 
-        {/* Location */}
+        
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Location
@@ -118,7 +117,7 @@ export function FieldForm({
           )}
         </div>
 
-        {/* Estimated Harvest Date */}
+        
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Estimated Harvest Date
@@ -135,7 +134,7 @@ export function FieldForm({
           )}
         </div>
 
-        {/* Submit Button */}
+       
         <div className="flex gap-4">
           <button
             type="submit"

@@ -20,7 +20,7 @@ export const fieldService = {
     if (filters?.search) params.append('search', filters.search);
 
     const response = await api.get<ApiResponse<PaginatedResponse<Field>>>(
-      `/fields/admin?${params.toString()}`
+      `/field-updates/all?${params.toString()}`
     );
     return response.data;
   },

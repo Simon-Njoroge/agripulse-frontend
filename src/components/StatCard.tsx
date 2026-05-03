@@ -1,9 +1,9 @@
-import { LucideIcon } from 'lucide-react';
+import type { FC } from 'react';
 
 interface StatCardProps {
   title: string;
   value: string | number;
-  icon: LucideIcon;
+  icon: FC<{ className?: string }>;
   trend?: {
     value: number;
     isPositive: boolean;

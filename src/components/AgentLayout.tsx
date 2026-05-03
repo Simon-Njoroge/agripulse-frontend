@@ -20,14 +20,14 @@ export function AgentLayout() {
 
   return (
     <div className="min-h-screen bg-gray-100 flex">
-      {/* Sidebar */}
+   
       <aside
         className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 lg:relative lg:translate-x-0 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         <div className="h-full flex flex-col">
-          {/* Logo */}
+         
           <div className="p-6 border-b border-gray-100">
             <Link to="/agent/dashboard" className="flex items-center gap-2">
               <Leaf className="w-8 h-8 text-green-600" />
@@ -35,7 +35,7 @@ export function AgentLayout() {
             </Link>
           </div>
 
-          {/* Navigation */}
+         
           <nav className="flex-1 p-4">
             <div className="space-y-2">
               <Link
@@ -63,7 +63,7 @@ export function AgentLayout() {
             </div>
           </nav>
 
-          {/* User Profile */}
+          
           <div className="p-4 border-t border-gray-100">
             <div className="flex items-center justify-between">
               <div>
@@ -82,9 +82,9 @@ export function AgentLayout() {
         </div>
       </aside>
 
-      {/* Main Content */}
+      
       <div className="flex-1">
-        {/* Top Bar */}
+        
         <div className="bg-white shadow-sm p-4 flex items-center gap-4">
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -97,13 +97,13 @@ export function AgentLayout() {
           <div className="flex-1" />
         </div>
 
-        {/* Content */}
+      
         <main className="p-8">
           <Outlet />
         </main>
       </div>
 
-      {/* Overlay for mobile */}
+     
       {sidebarOpen && (
         <div
           className="fixed inset-0 bg-black/50 z-40 lg:hidden"
